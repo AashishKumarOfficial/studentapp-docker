@@ -1,0 +1,36 @@
+services:
+  studentapp:
+    build: .
+    container_name: studentapp
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/studentdocker
+      SPRING_DATASOURCE_USERNAME: aashish
+      SPRING_DATASOURCE_PASSWORD: root123
+
+  mysql:
+    image: mysql:8.0
+    container_name: student-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: studentdocker
+      MYSQL_USER: aashish
+      MYSQL_PASSWORD: root123
+    ports:
+      - "3307:3306"
+    networks:
+      - my-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
